@@ -1,0 +1,841 @@
+﻿--- STEP 0 ---
+<USER_REQUEST>
+hi i want to make a webpage for events
+i have some ideas what it should be able to do and how it should work, but lets brainstorm a bit, maybe we can improve a bunch before we start making it.
+
+Die start seite sollte eine liste aller zukÃ¼nfitigen veranstaltungen sein, wobei die veranstaltungen bis zum Ende (falls bekannt) oder bis mitternacht des start termins angezeigt werden
+Alles davor wird als archiv angezeigt und ist nicht mehr bearbeitbar
+Wer Liefert die Veranstaltungen: Die Veranstalter selbst, die besitzer von Locations (Bars, Hallen, theater etc) aber auch crwodsourcing ist willkommen (alle ersteller mÃ¼ssen sich registrieren, unregistriert ist kein hinzufÃ¼gen / Ã¤ndern mÃ¶glich)
+Es sollte nicht nur info seiten pro Veranstaltung sondern auch pro veranstalter oder Location geben
+Locationinhaber und veranstalter kÃ¶nnen ihr Logo hochladen und somit leichter erkennbar machen
+Locationinhaber dÃ¼rfen eine begrenzte anzahl von Bildern hochladen welche als Galerie angesehen werden kann (denke mal 5-10)
+Login via google/microsoft/facebook/etc und ein extra breakingglass admin account mit extrem gehÃ¤rtetem kennwort, wenn mÃ¶glich auch mit MFA (das wÃ¤re generell fÃ¼r alle admin / mod user gut)
+
+Zum betrachten der Seite , Locations und veranstaltungen ist kein Login nÃ¶tig, aber zum erstellen / bearbeiten sehrwohl, Veranstalter und location inhaber mÃ¼ssen durch einen admin verifiziert werden
+
+Es sollte einen kanal zu den admins / mods geben (vl wie ein chat oder nachrichten?) damit probleme gemeldet werden kÃ¶nnen, dies soll jeder registrierte user kÃ¶nnen
+es sollte auch einen mÃ¶glichkeit geben mit dem Veranstalter / Locationinhaber in kontakt zu treten, die funktion kann vom veranstalter oder inhaber deaktiviert werden (da bin ich mir aber noch nicht sicher was der beste weg ist)
+
+alle registrierten user kÃ¶nnen bewertungen abgeben fÃ¼r veranstaltungen, Locations (daumen hoch runter, oder sterne system, mit optionalem KURZEM kommentar (vl wie die frÃ¼here maximal lÃ¤nge eines tweets? das waren glaub ich 140 zeichen oder so..))
+Der Veranstalter kann Bewertungen fÃ¼r sich selbst aktivieren, ist aber optional
+
+seite sollte auch als pwa unter android und ios funktionieren
+dadurch kÃ¶nnten wir pushnachrichten aussenden wenn der veranstalter oder Locationinhaber es mÃ¶chte (zb das man Veranstaltung abbonieren kann)
+
+bei einer Veranstaltung soll jeder (un-/registriert) die mÃ¶glichket einen ics kalender eintrag herunterzuladen
+
+pro veranstaltung gibt es auch einen "chat" der aber nur mit ende der veranstaltung gesperrt wird, aber immer noch einsehbar ist, der "chat" wird eine Woche nach dem event gelÃ¶scht.
+
+Bei Locations welche durch eine Veranstaltung angelegt wurden collte es so was wie "Claim this page" o.Ã„. geben damit der echte Inhaber die Seite Ã¼bernehmen und pflegen kann.
+
+Ideen oder verbesserungsvorschlÃ¤ge?
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T20:14:57+02:00.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from None to Gemini 3.1 Pro (High). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+--- STEP 6 ---
+<USER_REQUEST>
+punkt 1 ist top, danke fÃ¼r die hinweise
+Punkt 2 Rollen: ja deine varienta klingt besser
+Punkt 2 Crwodsourcing: hab ich vergessen aber ja die mÃ¼ssen erst bestÃ¤tigt werden (vom Veranstalter, wen kein Veranstalter ausgweÃ¤hlt wurde vom Locationinhaber, ansonsten von Mods oder Admins)
+3. Chat, datenschutz, ganz vergessen, Ã¤ndern wir es das es der Veranstalter aktivieren kann aber dan auch fÃ¼r die moderation zustÃ¤ndig ist. Alternativ zum Chat kan der Veranstalter auch andere seiten angeben (Facebook, Discord, eigene Seite oder App --> simples Feld zur URL eingabe und der lInk wird dann statt dem Chat angezeigt)
+Kontakt: Dem User wird nur der generelle Name des Veranstalters gezeigt, dem Veranstalte nur eine UserID die beim ersten Kontakt (zu diesem spezifischen Veranstalter) generiert wird, danach aber bleibt, somit ist anonymitÃ¤t gegeben aber es ist dennoch nachvollziehbar wen sich einuser immer wieder meldet (Der user kann auswÃ¤hlen ob er seinen echten Namen, Spitzname oder diese UserID verwendet, dies kann aber nach dem festlegen nicht mehr geÃ¤ndert werden)
+Eigentlich wÃ¤re das auch ganz gut fÃ¼r Locationinhaber oder nicht? selbes prinzip.
+
+"Wiederholen"  funktion ist ne gute Idee, aber muss flexibel genug sein das es auch "komische" rythmen versteht z.b jeder Donnerstag, auÃŸer an feiertagen und nicht am ersten Donnerstag des Monats <-- extrem beispiel
+
+Es wird auf dieser platform niemals Tickets oder andere endgeltliche transaktionen geben, das chaos tu ich mir nicht an.
+Drafts = definitiv
+Bilder auch fÃ¼r events: ja warum eigentlich nicht.
+
+beim Techstack hab ich null idee, da ich das ganze mit dir zusammen erstellen werden, frag mich bitte was du wisen musst um das richtige auszuwÃ¤hlen.
+
+das einzige was ich weis ist das es leicht skalierbar sein muss, im schlimmsten fall lÃ¤uft die seite (weil sie keiner nÃ¼tzt) auf nem raspi oder anderem minipc, im besten fall ist das mal ein verteiltes system in mehreren Rechenzentren
+
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T20:33:03+02:00.
+</ADDITIONAL_METADATA>
+--- STEP 12 ---
+<USER_REQUEST>
+Techstack:
+Frage 1: zum start lÃ¤uft das bei mir auf nem raspberry pi oder in nem docker container
+Frage 2: wir starten "Lokal" aber bereite einen migration weg zu S3 vor, damit wir jederzeit "umziehen" kÃ¶nnen
+Frage 3: Typescript klingt gut
+
+bevor wir starten, klÃ¤re was die aktuellen versionen der diversen programme / programmiersprachen sind, nicht das wir fertig sind und dann von vorne beginnen weil wir mit alten daten gearbeitet haben...
+
+dann aktualisiere bitte den plan und las mich nochmal drÃ¼ber lesen
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T20:40:25+02:00.
+</ADDITIONAL_METADATA>
+--- STEP 32 ---
+Comments on artifact URI: file:///c%3A/Users/Stefan/.gemini/antigravity-ide/brain/f87d3855-4eda-4fc8-8aa2-bf6b8fb3a51c/implementation_plan.md
+
+The user has approved this document.
+
+
+<USER_REQUEST>
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T20:43:57+02:00.
+</ADDITIONAL_METADATA>
+--- STEP 150 ---
+<USER_REQUEST>
+schaut gut aus, machen wir weiter
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T20:56:57+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\next.config.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\next.config.ts (LANGUAGE_TYPESCRIPT)
+</ADDITIONAL_METADATA>
+--- STEP 209 ---
+<USER_REQUEST>
+sieht toll aus
+soll es sein das wenn man aktuell auf eine der dummy events klickt nichts passiert?
+wenn ja dann mach bitte weiter, dein plan klingt gut
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:02:32+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\lib\prisma.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\lib\prisma.ts (LANGUAGE_TYPESCRIPT)
+</ADDITIONAL_METADATA>
+--- STEP 216 ---
+<USER_REQUEST>
+Frage1: OK
+Frage2: richtext (Standard) und als alternative ein markdown editor (falls das nicht zu komplex ist)
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:05:12+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\lib\prisma.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\lib\prisma.ts (LANGUAGE_TYPESCRIPT)
+</ADDITIONAL_METADATA>
+--- STEP 270 ---
+<USER_REQUEST>
+the login for the admin user does not work
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:10:19+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\events\create\page.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\upload\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\globals.css (LANGUAGE_CSS)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 1m9s)
+</ADDITIONAL_METADATA>
+--- STEP 281 ---
+<USER_REQUEST>
+nach dem login ist nirgend ein button um ein zum dashboard oder anderem zu kommen
+Ã¼ber die url "/dashboard" komme ich zwar dorthin aber der dortige button "Neues Event anlegen" welcher korrekt nach "dashboard/events/create" zeigt gibt mir einen 404 fehler zurÃ¼ck.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:14:48+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\upload\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\globals.css (LANGUAGE_CSS)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\dashboard\page.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\layout.tsx (LANGUAGE_TSX)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 3m57s)
+</ADDITIONAL_METADATA>
+--- STEP 295 ---
+<USER_REQUEST>
+der text im editor wird beim ersten tippen nicht ersetzt, ist etwas blÃ¶d da man das heut e eigentlich schon so erwartet
+
+das auswÃ¤hlen eines bildes klappt aber beim "event verÃ¶ffentlichen" kommt ein generischer fehler und das wir in der npm console ausgegeben:
+
+[browser] Next.js detected. `immediatelyRender` defaults to false to avoid hydration mismatches. Pass `immediatelyRender: true` explicitly if you are rendering the editor only on the client. (src/components/rich-text-editor.tsx:14:27)
+[browser] Next.js detected. `immediatelyRender` defaults to false to avoid hydration mismatches. Pass `immediatelyRender: true` explicitly if you are rendering the editor only on the client. (src/components/rich-text-editor.tsx:14:27)
+ POST /api/upload 200 in 90ms (next.js: 52ms, application-code: 38ms)
+Create event error: Error [PrismaClientValidationError]: 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].organizer.findUnique()` invocation in
+C:\Users\Stefan\Documents\Github\Veranstaltungkalender\.next\dev\server\chunks\[root-of-the-server]__1jen5hc._.js:257:173
+
+  254 const body = await req.json();
+  255 const { title, description, startDate, locationId, organizerId, imageBanner, chatEnabled } = body;
+  256 // Security check: Make sure the user owns the organizer
+â†’ 257 const organizer = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].organizer.findUnique({
+        where: {
+          id: undefined,
+      ?   AND?: OrganizerWhereInput | OrganizerWhereInput[],
+      ?   OR?: OrganizerWhereInput[],
+      ?   NOT?: OrganizerWhereInput | OrganizerWhereInput[],
+      ?   name?: StringFilter | String,
+      ?   description?: StringNullableFilter | String | Null,
+      ?   logo?: StringNullableFilter | String | Null,
+      ?   reviewsEnabled?: BoolFilter | Boolean,
+      ?   isVerified?: BoolFilter | Boolean,
+      ?   ownerId?: StringN
+<truncated 49 bytes>
+UserNullableScalarRelationFilter | UserWhereInput | Null,
+      ?   events?: EventListRelationFilter
+        }
+      })
+
+Argument `where` of type OrganizerWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.
+    at <unknown> (src\app\api\events\route.ts:27:46)
+    at async POST (src\app\api\events\route.ts:27:23)
+  25 |
+  26 |     // Security check: Make sure the user owns the organizer
+> 27 |     const organizer = await prisma.organizer.findUnique({
+     |                                              ^
+  28 |       where: { id: organizerId }
+  29 |     });
+  30 | {
+  clientVersion: '7.8.0'
+}
+ POST /api/events 500 in 391ms (next.js: 205ms, application-code: 185ms)
+[browser] Error: Failed to create event
+    at handleSubmit (src/app/(dashboard)/dashboard/events/create/page.tsx:54:26)
+  52 |       });
+  53 |
+> 54 |       if (!res.ok) throw new Error("Failed to create event");
+     |                          ^
+  55 |
+  56 |       toast.success("Event erfolgreich angelegt!");
+  57 |       router.push("/dashboard");
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:19:23+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\events\create\page.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\upload\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\globals.css (LANGUAGE_CSS)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 3m37s)
+</ADDITIONAL_METADATA>
+--- STEP 304 ---
+<USER_REQUEST>
+scheint immer noch nicht zu gehen:
+
+Create event error: Error [PrismaClientKnownRequestError]: 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].organizer.create()` invocation in
+C:\Users\Stefan\Documents\Github\Veranstaltungkalender\.next\dev\server\chunks\[root-of-the-server]__1jen5hc._.js:268:174
+
+  265 let finalOrganizerId = organizerId;
+  266 if (!organizer || organizer.ownerId !== userId) {
+  267     // If no organizer is passed or owned, auto-create one for this user for the MVP
+â†’ 268     const newOrg = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].organizer.create(
+Foreign key constraint violated on the constraint: `Organizer_ownerId_fkey`
+    at <unknown> (src\app\api\events\route.ts:37:46)
+    at async POST (src\app\api\events\route.ts:37:23)
+  35 |     if (!organizer || organizer.ownerId !== userId) {
+  36 |        // If no organizer is passed or owned, auto-create one for this user for the MVP
+> 37 |        const newOrg = await prisma.organizer.create({
+     |                                              ^
+  38 |          data: {
+  39 |            name: "Mein Veranstalter-Profil",
+  40 |            ownerId: userId, {
+  code: 'P2003',
+  meta: {
+    modelName: 'Organizer',
+    driverAdapterError: Error [DriverAdapterError]: ForeignKeyConstraintViolation
+        at async POST (src\app\api\events\route.ts:37:23)
+      35 |     if (!organizer || organizer.ownerId !== userId) {
+      36 |        // If no organizer is passed or owned, auto-create one for this user for the MVP      
+    > 37 |        const newOrg = await prisma.organizer.create({
+         |                       ^
+      38 |          data: {
+      39 |            name: "Mein Veranstalter-Profil",
+      40 |            ownerId: userId, {
+      [cause]: [Object]
+    }
+  },
+  clientVersion: '7.8.0'
+}
+ POST /api/events 500 in 460ms (next.js: 127ms, application-code: 332ms)
+[browser] Error: Failed to create event
+    at handleSubmit (src/app/(dashboard)/dashboard/events/create/page.tsx:54:26)
+  52 |       });
+  53 |
+> 54 |       if (!res.ok) throw new Error("Failed to create event");
+     |                          ^
+  55 |
+  56 |       toast.success("Event erfolgreich angelegt!");
+  57 |       router.push("/dashboard");
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:21:07+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\events\create\page.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\upload\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\globals.css (LANGUAGE_CSS)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 5m22s)
+</ADDITIONAL_METADATA>
+--- STEP 312 ---
+<USER_REQUEST>
+wenn man auf abmelden klickt wird man nicht zur startseite umgelietet (ich bin grade auf der event erstell seite gewesen und dort geblieben)
+
+das event wurde angelegt aber wen ich auf den ansehen button klicke kommt ein grober fehler:
+consolen fehler:
+Create event error: Error [PrismaClientKnownRequestError]: 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].organizer.create()` invocation in
+C:\Users\Stefan\Documents\Github\Veranstaltungkalender\.next\dev\server\chunks\[root-of-the-server]__1jen5hc._.js:268:174
+
+  265 let finalOrganizerId = organizerId;
+  266 if (!organizer || organizer.ownerId !== userId) {
+  267     // If no organizer is passed or owned, auto-create one for this user for the MVP
+â†’ 268     const newOrg = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].organizer.create(
+Foreign key constraint violated on the constraint: `Organizer_ownerId_fkey`
+    at <unknown> (src\app\api\events\route.ts:37:46)
+    at async POST (src\app\api\events\route.ts:37:23)
+  35 |     if (!organizer || organizer.ownerId !== userId) {
+  36 |        // If no organizer is passed or owned, auto-create one for this user for the MVP
+> 37 |        const newOrg = await prisma.organizer.create({
+     |                                              ^
+  38 |          data: {
+  39 |            name: "Mein Veranstalter-Profil",
+  40 |            ownerId: userId, {
+  code: 'P2003',
+  meta: {
+    modelName: 'Organizer',
+    driverAdapterError: Error [DriverAdapterError]: ForeignKeyConstraintViolation
+        at async POST (src\app\api\events\route.ts:37:23)
+      35 |     if (!organizer || organizer.ownerId !== userId) {
+      36 |        // If no organizer is passed or owned, auto-create one for this user for the MVP      
+    > 37 |        const newOrg = await prisma.organizer.create({
+         |                       ^
+      38 |          dat
+<truncated 13505 bytes>
+ default async function EventDetailPage({ params }: { params: { id: string } }) {
+>  8 |   const event = await prisma.event.findUnique({
+     |                 ^
+   9 |     where: { id: params.id },
+  10 |     include: {
+  11 |       location: true,
+
+Browser fehler:
+## Error Type
+Console Error
+
+## Error Message
+React does not recognize the `asChild` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `aschild` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+
+
+    at button (unknown:0:0)
+    at Button (src/components/ui/button.tsx:50:5)
+    at Navbar (src/components/navbar.tsx:27:15)
+    at RootLayout (src\app\layout.tsx:24:11)
+
+## Code Frame
+  48 | }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+  49 |   return (
+> 50 |     <ButtonPrimitive
+     |     ^
+  51 |       data-slot="button"
+  52 |       className={cn(buttonVariants({ variant, size, className }))}
+  53 |       {...props}
+
+Next.js version: 16.2.9 (Turbopack)
+
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:26:04+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\events\create\page.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\upload\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\globals.css (LANGUAGE_CSS)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 10m18s)
+</ADDITIONAL_METADATA>
+--- STEP 319 ---
+<USER_REQUEST>
+jetzt klappts, dan mal weiter im plan
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:27:44+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\node_modules\next\dist\docs\index.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\upload\route.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\globals.css (LANGUAGE_CSS)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\dashboard\page.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\layout.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\events\[id]\page.tsx (LANGUAGE_TSX)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 44s)
+</ADDITIONAL_METADATA>
+--- STEP 325 ---
+<USER_REQUEST>
+Frage1: es reicht mal ein bild damits nach was aussieht, gallerie kommt spÃ¤ter
+Frage2: ja passt
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:29:26+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 2m27s)
+</ADDITIONAL_METADATA>
+--- STEP 355 ---
+<USER_REQUEST>
+beim erstellen einer veranstaltung kann erfolgreich die location ausgewÃ¤hlt werden
+abllerdings wird stat dem namen der location die ID angezeigt, aber nur nachdem eine ausgewÃ¤hlt wurde, das dropdown zeigt die namen korrkt an
+
+auch habe ich keinen weg gefunden die Veranstaltungen einer location anzuzeigen, auf der veranstaltungseite wird zwar die Location richtig gelistet aber die ist nicht klickbar
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:51:06+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 24m6s)
+</ADDITIONAL_METADATA>
+--- STEP 363 ---
+<USER_REQUEST>
+jetz gehen die event seiten garnicht mehr auf:
+
+## Error Type
+Console Error
+
+## Error Message
+React does not recognize the `asChild` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `aschild` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+
+
+    at button (unknown:0:0)
+    at Button (src\components\ui\button.tsx:50:5)
+    at DashboardPage (src\app\(dashboard)\dashboard\page.tsx:40:9)
+
+## Code Frame
+  48 | }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+  49 |   return (
+> 50 |     <ButtonPrimitive
+     |     ^
+  51 |       data-slot="button"
+  52 |       className={cn(buttonVariants({ variant, size, className }))}
+  53 |       {...props}
+
+Next.js version: 16.2.9 (Turbopack)
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:52:28+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 25m29s)
+</ADDITIONAL_METADATA>
+--- STEP 373 ---
+<USER_REQUEST>
+homepage geht
+login geht
+dashboard geht
+veranstaltundgs seiten gehen nicht, fehler:
+## Error Type
+Runtime ReferenceError
+
+## Error Message
+Link is not defined
+
+
+    at EventDetailPage (src\app\events\[id]\page.tsx:59:14)
+
+## Code Frame
+  57 |           <div className="flex items-center gap-2">
+  58 |             <MapPinIcon className="w-5 h-5 text-cyan-500" />
+> 59 |             <Link href={`/locations/${event.location.id}`} className="hover:text-cyan-500 transition-colors">
+     |              ^
+  60 |               <span>{event.location.name}</span>
+  61 |             </Link>
+  62 |           </div>
+
+Next.js version: 16.2.9 (Turbopack)
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:54:42+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 1m24s)
+</ADDITIONAL_METADATA>
+--- STEP 380 ---
+<USER_REQUEST>
+scheint ales zu funktionieren
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:55:54+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 2m37s)
+</ADDITIONAL_METADATA>
+--- STEP 383 ---
+<USER_REQUEST>
+ok da fehlt vorher noch was
+derzeit gibt es keinen weg eine Location zu editieren
+das "claimen" einer location oder vernstaltung kommt vermutlich spÃ¤ter? genauso wie die Veranstalter selber?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:57:18+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 4m1s)
+</ADDITIONAL_METADATA>
+--- STEP 392 ---
+<USER_REQUEST>
+wiki prinzip klingt gut, ein mod oder admin kann es aber jederzeit jemand anderem zuweisen
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T21:59:32+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 6m15s)
+</ADDITIONAL_METADATA>
+--- STEP 440 ---
+<USER_REQUEST>
+event, location und veranstalter erfolgreich geÃ¤ndert
+ohne login nicht Ã¤nderbar
+also schauts gut aus :)
+einzig wenn ein registrierter user eine veranstaltung an einem neuem ort oder mit einem neuem veranstalter enlegt geht das nicht da dort nur bestehende zur auswahl sind... bin mir nicht sicher ob das eh so besser ist oder nicht... 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:07:14+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 13m57s)
+</ADDITIONAL_METADATA>
+--- STEP 443 ---
+<USER_REQUEST>
+eventarchiv
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:08:19+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 15m1s)
+</ADDITIONAL_METADATA>
+--- STEP 449 ---
+<USER_REQUEST>
+jeder kann archiviertes sehen, das erinnet mich aber das wir spÃ¤ter nicht die "Entwurf" funktion vergessen dÃ¼rfen
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:10:11+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\dashboard\organizers\edit\[id]\page.tsx (LANGUAGE_TSX)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\components\forms\event-form.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\components\forms\organizer-form.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\dashboard\page.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\dashboard\organizers\edit\[id]\page.tsx (LANGUAGE_TSX)
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\(dashboard)\dashboard\events\create\page.tsx (LANGUAGE_TSX)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 16m53s)
+</ADDITIONAL_METADATA>
+--- STEP 477 ---
+<USER_REQUEST>
+klappt einwandfrei, aber es solte einen weg geben (nur admin / mods) eine Veranstaltung auch im Archiv zu Ã¤ndern (nur das datum)
+fÃ¼r den fall das sich mal jemand beim datum eingeben vertut, dann kann das noch gerettet werden
+danach die EntwÃ¼rfe, danach Bewertungen und chat
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:15:25+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\page.tsx (LANGUAGE_TSX)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\page.tsx (LANGUAGE_TSX)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 22m8s)
+</ADDITIONAL_METADATA>
+--- STEP 492 ---
+<USER_REQUEST>
+oh noch ne idee fÃ¼r entwÃ¼rfe, ein zuÃ¤tzliches optionales datums und zeit feld wo man einstellen kann wann der enwturf automatisch "live" geht, dann kann man das automatisieren, geht sowas?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:17:46+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 24m29s)
+</ADDITIONAL_METADATA>
+--- STEP 498 ---
+Comments on artifact URI: file:///c%3A/Users/Stefan/.gemini/antigravity-ide/brain/f87d3855-4eda-4fc8-8aa2-bf6b8fb3a51c/implementation_plan.md
+
+The user has approved this document.
+
+
+<USER_REQUEST>
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:19:03+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 25m46s)
+</ADDITIONAL_METADATA>
+--- STEP 540 ---
+<USER_REQUEST>
+the mainpage no longer loads:
+
+## Error Type
+Runtime PrismaClientValidationError
+
+## Error Message
+
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].event.findMany()` invocation in
+C:\Users\Stefan\Documents\Github\Veranstaltungkalender\.next\dev\server\chunks\ssr\[root-of-the-server]__1hg7kcw._.js:87:160
+
+  84 const now = new Date();
+  85 const startOfToday = new Date(now);
+  86 startOfToday.setHours(0, 0, 0, 0);
+â†’ 87 const events = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].event.findMany({
+       where: {
+         isDraft: false,
+         OR: [
+           {
+             publishAt: null
+           },
+           {
+             publishAt: {
+               lte: new Date("2026-06-29T20:21:48.090Z")
+             }
+           }
+         ],
+         AND: [
+           {
+             OR: [
+               {
+                 endDate: {
+                   gte: new Date("2026-06-29T20:21:48.090Z")
+                 }
+               },
+               {
+                 AND: [
+                   {
+                     endDate: null
+                   },
+                   {
+                     startDate: {
+                       gte: new Date("2026-06-28T22:00:00.000Z")
+                     }
+                   }
+                 ]
+               }
+             ]
+           }
+         ]
+       },
+       include: {
+         location: true,
+         organizer: true
+       },
+       orderBy: {
+         startDate: "asc"
+       }
+     })
+
+Unknown argument `publishAt`. Available options are marked with ?.
+
+
+    at Home (src\app\page.tsx:10:18)
+
+## Code Frame
+   8 |   startOfToday.setHours(0, 0, 0, 0);
+   9 |
+> 10 |   const events = await prisma.event.findMany({
+     |                  ^
+  11 |     where: {
+  12 |       isDraft: false,
+  13 |       OR: [
+
+Next.js version: 16.2.9 (Turbopack)
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:22:01+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 18s)
+</ADDITIONAL_METADATA>
+--- STEP 550 ---
+<USER_REQUEST>
+so das verÃ¶ffentlichunsdatum funktioniert aber nun geht die detail seite von veranstaltungen icht mehr:
+
+## Error Type
+Runtime ReferenceError
+
+## Error Message
+isArchived is not defined
+
+
+    at EventDetailPage (src\app\events\[id]\page.tsx:57:161)
+
+## Code Frame
+  55 | ...
+  56 | ...
+> 57 | ...20 flex items-center justify-center rounded-xl shadow-lg border ${isArchived ? 'grayscale' : ''}`}>
+     |                                                                      ^
+  58 | ...
+  59 | ...
+  60 | ...
+
+Next.js version: 16.2.9 (Turbopack)
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:25:03+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 2m19s)
+</ADDITIONAL_METADATA>
+--- STEP 560 ---
+<USER_REQUEST>
+hat geklappt, auf zu chats / betwertungen
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:26:09+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 3m25s)
+</ADDITIONAL_METADATA>
+--- STEP 569 ---
+<USER_REQUEST>
+bewertungen ab dem start termin
+davor kann ja schonim chat gequatscht werden
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:31:03+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 8m19s)
+</ADDITIONAL_METADATA>
+--- STEP 605 ---
+<USER_REQUEST>
+schau dir mal unseren chat von anfang an durch, ich glaub irgendwas haben wir vergessen...
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-29T22:34:09+02:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Stefan\Documents\Github\Veranstaltungkalender\src\app\api\events\[id]\route.ts (LANGUAGE_TYPESCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\Stefan\Documents\Github\Veranstaltungkalender, running for 11m25s)
+</ADDITIONAL_METADATA>

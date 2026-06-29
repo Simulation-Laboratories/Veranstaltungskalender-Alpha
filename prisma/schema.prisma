@@ -1,0 +1,174 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- NextAuth Core Models ---
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// --- Domain Models ---
+
+enum Role {
+  USER
+  ORGANIZER
+  LOCATION_OWNER
+  MODERATOR
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(USER)
+  
+  accounts      Account[]
+  sessions      Session[]
+  
+  // Relations
+  ownedLocations Location[]
+  ownedOrganizers Organizer[]
+  reviews       Review[]
+  sentMessages  Message[]  @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+}
+
+model Organizer {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?  @db.Text
+  logo           String?
+  reviewsEnabled Boolean  @default(false)
+  isVerified     Boolean  @default(false) // Admin verified
+  
+  ownerId        String?
+  owner          User?    @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  
+  events         Event[]
+}
+
+model Location {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+  address     String
+  logo        String?
+  gallery     String[] // Array of image URLs
+  isVerified  Boolean  @default(false) // Admin verified ("Claimed")
+  
+  ownerId     String?
+  owner       User?    @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  
+  events      Event[]
+  reviews     Review[]
+}
+
+model Event {
+  id           String   @id @default(cuid())
+  title        String
+  description  String   @db.Text
+  startDate    DateTime
+  endDate      DateTime? // Optional, fallback will be handled in app logic
+  isDraft      Boolean  @default(true)
+  publishAt    DateTime? // Optional future date for auto-publishing
+  imageBanner  String?
+  externalLink String?  // E.g., for Discord/FB instead of internal chat
+  chatEnabled  Boolean  @default(false) // If they want internal chat
+  categories   String[] @default([]) // Array of categories for filtering
+
+  
+  // Recurrence rule string (e.g. RRULE or custom JSON)
+  recurrenceRule String? 
+
+  organizerId  String
+  organizer    Organizer @relation(fields: [organizerId], references: [id], onDelete: Cascade)
+  
+  locationId   String
+  location     Location  @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  reviews      Review[]
+  chatMessages EventChatMessage[]
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  rating     Int      // 1-5 stars
+  comment    String?  @db.VarChar(280) // Twitter-like length limit
+  createdAt  DateTime @default(now())
+  
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  eventId    String?
+  event      Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+}
+
+// For anonymous/pseudonymous messaging to organizers/locations
+model Message {
+  id         String   @id @default(cuid())
+  content    String   @db.Text
+  createdAt  DateTime @default(now())
+  
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+model EventChatMessage {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  // Note: Depending on privacy, this might just store a pseudonymous username
+  authorName String
+}
