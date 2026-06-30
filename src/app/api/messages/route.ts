@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     }
 
     const userId = (session.user as any).id;
-    
+
     const messages = await prisma.message.findMany({
       where: {
         OR: [
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     if (message.receiver?.email) {
       await sendEmail({
         to: message.receiver.email,
-        subject: "Neue Nachricht auf EventHub",
+        subject: "Neue Nachricht vom inoffiziellen Veranstaltungskalender Österreich",
         html: `<p>Hallo ${message.receiver.name},</p><p>du hast eine neue Nachricht von ${message.sender.name} erhalten.</p><p>Logge dich ein, um sie zu lesen.</p>`
       });
     }

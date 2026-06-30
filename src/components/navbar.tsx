@@ -6,16 +6,16 @@ import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const { data: session, status } = useSession();
-  
+
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
         <div className="flex gap-4">
           <Link href="/" className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-cyan-500">
-            EventHub
+            inoffizieller Veranstaltungskalender Österreich :)
           </Link>
         </div>
-        
+
         <nav className="flex items-center gap-4">
           <Link href="/" className="transition-colors hover:text-foreground/80 text-foreground">
             Startseite
