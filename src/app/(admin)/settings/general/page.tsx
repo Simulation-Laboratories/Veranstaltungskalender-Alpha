@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
+import { Info } from "lucide-react";
+
 export default function GeneralSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -60,7 +62,18 @@ export default function GeneralSettingsPage() {
       <div className="p-6 border rounded-lg bg-card space-y-4">
         <h4 className="font-semibold">NextAuth URL</h4>
         <div className="space-y-2">
-          <Label>Public Application URL (NextAuth)</Label>
+          <div className="flex items-center gap-2">
+            <Label>Public Application URL (NextAuth)</Label>
+            <a 
+              href="https://next-auth.js.org/configuration/options#nextauth_url" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              title="This is the base URL of your site (e.g., https://events.example.com). It's required for social logins to construct callback URLs correctly."
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Info className="w-4 h-4" />
+            </a>
+          </div>
           <Input value={config.nextauthUrl} onChange={(e) => setConfig({...config, nextauthUrl: e.target.value})} placeholder="https://events.example.com" />
         </div>
         <Button onClick={() => handleSave('nextauth_url', config.nextauthUrl)} disabled={saving}>Save URL</Button>

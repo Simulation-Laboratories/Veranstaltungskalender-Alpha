@@ -54,9 +54,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth(async (req) => {
 
       ...(steamConfig.clientSecret
         ? [
-            SteamProvider(req as NextRequest, {
+            SteamProvider(req ?? new Request(nextAuthUrl), {
               clientSecret: steamConfig.clientSecret,
-              callbackUrl: `${nextAuthUrl}/api/auth/callback/steam`
+              callbackUrl: `${nextAuthUrl}/api/auth/callback`
             }),
           ]
         : []),

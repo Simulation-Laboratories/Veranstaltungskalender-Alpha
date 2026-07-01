@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
+import { Info } from "lucide-react";
+
 export default function AuthSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -68,7 +70,18 @@ export default function AuthSettingsPage() {
       
       {/* Google */}
       <div className="p-6 border rounded-lg bg-card space-y-4">
-        <h4 className="font-semibold">Google</h4>
+        <div className="flex items-center gap-2">
+          <h4 className="font-semibold">Google</h4>
+          <a 
+            href="https://next-auth.js.org/providers/google" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Click to learn how to obtain Google Client ID and Secret from the Google Cloud Console."
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Info className="w-4 h-4" />
+          </a>
+        </div>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label>Client ID</Label>
@@ -84,7 +97,18 @@ export default function AuthSettingsPage() {
 
       {/* Facebook */}
       <div className="p-6 border rounded-lg bg-card space-y-4">
-        <h4 className="font-semibold">Facebook</h4>
+        <div className="flex items-center gap-2">
+          <h4 className="font-semibold">Facebook</h4>
+          <a 
+            href="https://next-auth.js.org/providers/facebook" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Click to learn how to obtain Facebook Client ID and Secret from Facebook Developers."
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Info className="w-4 h-4" />
+          </a>
+        </div>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label>Client ID</Label>
@@ -98,9 +122,20 @@ export default function AuthSettingsPage() {
         <Button onClick={() => handleSave('auth_facebook', { clientId: config.facebookId, clientSecret: config.facebookSecret })} disabled={saving}>Save Facebook Config</Button>
       </div>
       
-      {/* Azure */}
+      {/* Microsoft Entra ID (Azure AD) */}
       <div className="p-6 border rounded-lg bg-card space-y-4">
-        <h4 className="font-semibold">Azure AD</h4>
+        <div className="flex items-center gap-2">
+          <h4 className="font-semibold">Microsoft Entra ID</h4>
+          <a 
+            href="https://next-auth.js.org/providers/azure-ad" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Click to learn how to configure Microsoft Entra ID (formerly Azure AD) App Registrations."
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Info className="w-4 h-4" />
+          </a>
+        </div>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label>Client ID</Label>
@@ -115,12 +150,23 @@ export default function AuthSettingsPage() {
             <Input type="password" value={config.azureSecret} onChange={(e) => setConfig({...config, azureSecret: e.target.value})} />
           </div>
         </div>
-        <Button onClick={() => handleSave('auth_azure', { clientId: config.azureId, clientSecret: config.azureSecret, tenantId: config.azureTenant })} disabled={saving}>Save Azure Config</Button>
+        <Button onClick={() => handleSave('auth_azure', { clientId: config.azureId, clientSecret: config.azureSecret, tenantId: config.azureTenant })} disabled={saving}>Save Microsoft Config</Button>
       </div>
 
       {/* Steam */}
       <div className="p-6 border rounded-lg bg-card space-y-4">
-        <h4 className="font-semibold">Steam</h4>
+        <div className="flex items-center gap-2">
+          <h4 className="font-semibold">Steam</h4>
+          <a 
+            href="https://steamcommunity.com/dev/apikey" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Click to learn how to obtain a Steam API Key (used as Client Secret for login)."
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Info className="w-4 h-4" />
+          </a>
+        </div>
         <div className="space-y-2">
           <Label>Steam Secret Key</Label>
           <Input type="password" value={config.steamSecret} onChange={(e) => setConfig({...config, steamSecret: e.target.value})} />

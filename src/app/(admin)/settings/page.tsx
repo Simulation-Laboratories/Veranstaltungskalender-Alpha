@@ -60,23 +60,23 @@ export default async function SettingsOverviewPage() {
           <dl className="space-y-4 text-sm">
             <div className="flex justify-between border-b pb-2">
               <dt>App Version</dt>
-              <dd className="font-mono">{pkg.version || 'Unknown'}</dd>
+              <dd className="font-mono">{pkg.version?.replace(/^[^\d]/, '') || 'Unknown'}</dd>
             </div>
             <div className="flex justify-between border-b pb-2">
               <dt>Next.js</dt>
-              <dd className="font-mono">{pkg.dependencies?.['next'] || 'Unknown'}</dd>
+              <dd className="font-mono">{pkg.dependencies?.['next']?.replace(/^[^\d]/, '') || 'Unknown'}</dd>
             </div>
             <div className="flex justify-between border-b pb-2">
               <dt>React</dt>
-              <dd className="font-mono">{pkg.dependencies?.['react'] || 'Unknown'}</dd>
+              <dd className="font-mono">{pkg.dependencies?.['react']?.replace(/^[^\d]/, '') || 'Unknown'}</dd>
             </div>
             <div className="flex justify-between border-b pb-2">
               <dt>Prisma</dt>
-              <dd className="font-mono">{pkg.dependencies?.['@prisma/client'] || 'Unknown'}</dd>
+              <dd className="font-mono">{pkg.dependencies?.['@prisma/client']?.replace(/^[^\d]/, '') || 'Unknown'}</dd>
             </div>
             <div className="flex justify-between border-b pb-2">
               <dt>NextAuth</dt>
-              <dd className="font-mono">{pkg.dependencies?.['next-auth'] || 'Unknown'}</dd>
+              <dd className="font-mono">{pkg.dependencies?.['next-auth']?.replace(/^[^\d]/, '') || 'Unknown'}</dd>
             </div>
           </dl>
         </div>
