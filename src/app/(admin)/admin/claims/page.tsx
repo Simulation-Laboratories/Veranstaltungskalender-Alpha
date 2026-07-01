@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { Button } from "@/components/ui/button";
-import { CheckCircleIcon, XCircleIcon } from "lucide-react";
+import { CheckCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { sendEmail } from "@/lib/email";
 

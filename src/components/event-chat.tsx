@@ -40,6 +40,7 @@ export function EventChat({ eventId, isArchived }: { eventId: string, isArchived
     // Optional: Set up a polling interval for live chat MVP
     const interval = setInterval(fetchMessages, 10000); // refresh every 10s
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,7 +61,7 @@ export function EventChat({ eventId, isArchived }: { eventId: string, isArchived
       setMessages([...messages, newMessage]);
       setContent("");
       toast.success("Nachricht gesendet!");
-    } catch (error) {
+    } catch {
       toast.error("Fehler beim Senden");
     } finally {
       setSubmitting(false);

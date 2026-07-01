@@ -9,7 +9,7 @@ interface StorageProvider {
 
 // Local storage provider (default for Docker/Mini-PC setup)
 class LocalStorageProvider implements StorageProvider {
-  async uploadFile(fileBuffer: Buffer, originalFilename: string, mimeType: string): Promise<string> {
+  async uploadFile(fileBuffer: Buffer, originalFilename: string): Promise<string> {
     const ext = path.extname(originalFilename) || ".jpg";
     const filename = `${uuidv4()}${ext}`;
     const uploadDir = path.join(process.cwd(), "public/uploads");

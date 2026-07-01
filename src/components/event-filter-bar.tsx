@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, XIcon, LayoutGridIcon, ListIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const CATEGORIES = ["Party", "Kultur", "Sport", "Business", "Kinder", "Essen & Trinken"];
 
@@ -12,16 +12,26 @@ export function EventFilterBar() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-  const [query, setQuery] = useState(searchParams.get("q") || "");
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "");
+  const urlQuery = searchParams.get("q") || "";
+  const urlCategory = searchParams.get("category") || "";
+  
+  const [query, setQuery] = useState(urlQuery);
+  const [prevUrlQuery, setPrevUrlQuery] = useState(urlQuery);
+  
+  const [selectedCategory, setSelectedCategory] = useState(urlCategory);
+  const [prevUrlCategory, setPrevUrlCategory] = useState(urlCategory);
+  
   const currentView = searchParams.get("view") || "grid";
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setQuery(searchParams.get("q") || "");
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSelectedCategory(searchParams.get("category") || "");
-  }, [searchParams]);
+  if (urlQuery !== prevUrlQuery) {
+    setPrevUrlQuery(urlQuery);
+    setQuery(urlQuery);
+  }
+
+  if (urlCategory !== prevUrlCategory) {
+    setPrevUrlCategory(urlCategory);
+    setSelectedCategory(urlCategory);
+  }
 
   const applyFilters = (newQuery: string, newCategory: string, newView: string = currentView) => {
     const params = new URLSearchParams(searchParams.toString());

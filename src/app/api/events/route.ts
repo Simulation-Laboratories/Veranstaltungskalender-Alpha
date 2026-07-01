@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
       organizerId,
       locationId,
       chatEnabled,
-      externalLink,
       recurrence,
       isDraft,
       categories,
@@ -123,7 +122,7 @@ export async function GET() {
     });
     
     return NextResponse.json(events);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

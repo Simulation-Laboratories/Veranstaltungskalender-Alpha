@@ -1,7 +1,7 @@
 // Simple email abstraction for Resend or Nodemailer
 // Set ENABLE_EMAILS=true in .env to actually send emails.
 
-export async function sendEmail({ to, subject, html }: { to: string, subject: string, html: string }) {
+export async function sendEmail({ to, subject }: { to: string, subject: string, html: string }) {
   if (process.env.ENABLE_EMAILS !== 'true') {
     console.log(`[EMAIL DISABLED] Would send email to: ${to}`);
     console.log(`[EMAIL DISABLED] Subject: ${subject}`);

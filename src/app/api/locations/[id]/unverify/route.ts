@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       data: { isVerified: false, ownerId: null }
     });
     return NextResponse.json({ message: "Location unverified successfully" });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to unverify" }, { status: 500 });
   }
 }

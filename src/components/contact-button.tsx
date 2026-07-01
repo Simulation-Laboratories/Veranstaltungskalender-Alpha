@@ -35,7 +35,7 @@ export function ContactButton({ receiverId, label = "Nachricht senden" }: { rece
       setOpen(false);
       setContent("");
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.error("Die Nachricht konnte nicht gesendet werden.");
     } finally {
       setLoading(false);

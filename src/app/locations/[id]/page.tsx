@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPinIcon, CalendarIcon, CheckCircle2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { ReviewSection } from "@/components/review-section";
 import { ContactButton } from "@/components/contact-button";
 import { ClaimButton } from "@/components/claim-button";

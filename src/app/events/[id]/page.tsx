@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarIcon, MapPinIcon, ClockIcon } from "lucide-react";
+import { CalendarIcon, MapPinIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { EventChat } from "@/components/event-chat";
@@ -41,13 +41,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     notFound(); // Hide it from public
   }
 
-  // Very simple ICS generator for MVP
-  const generateICS = () => {
-    // In a real Server Component, this would ideally be a separate API route.
-    // For demonstration, we'll let the user download it via a client-side blob if it were a client component.
-    // Since this is a server component, we'd link to `/api/events/${event.id}/ics`.
-    // Let's just render the link for now.
-  };
+
 
   return (
     <div className="container mx-auto py-10 space-y-8 max-w-4xl">

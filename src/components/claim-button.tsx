@@ -15,7 +15,7 @@ export function ClaimButton({ locationId }: { locationId: string }) {
       });
       if (!res.ok) throw new Error("Fehler beim Senden");
       toast.success("Anfrage gesendet! Ein Admin wird sich in Kürze bei dir melden.");
-    } catch (error) {
+    } catch {
       toast.error("Fehler beim Senden der Anfrage.");
     } finally {
       setLoading(false);

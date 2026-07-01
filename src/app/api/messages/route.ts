@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
 import { z } from "zod";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
     if (!session?.user) {
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.json(messages);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(message);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

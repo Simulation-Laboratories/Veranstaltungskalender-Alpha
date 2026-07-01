@@ -3,9 +3,9 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarIcon, MapPinIcon, CheckCircle2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { ContactButton } from "@/components/contact-button";
-import { getSafeUrl } from "@/lib/utils";
+
 
 export default async function OrganizerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
