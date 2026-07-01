@@ -172,3 +172,8 @@ model EventChatMessage {
   // Note: Depending on privacy, this might just store a pseudonymous username
   authorName String
 }
+
+model SystemSettings {
+  key   String @id
+  value String @db.Text // Stored as JSON string
+}

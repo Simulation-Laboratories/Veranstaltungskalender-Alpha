@@ -33,6 +33,11 @@ export function Navbar() {
               <Link href="/dashboard">
                 <Button variant="ghost">Dashboard</Button>
               </Link>
+              {session.user?.role === "ADMIN" && (
+                <Link href="/settings">
+                  <Button variant="ghost">Settings</Button>
+                </Link>
+              )}
               <Button variant="outline" onClick={() => signOut({ callbackUrl: '/' })}>
                 Abmelden
               </Button>

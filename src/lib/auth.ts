@@ -7,51 +7,56 @@ import SteamProvider from "authjs-steam-provider";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
+import { getSystemSetting } from "./config";
 
-export const { handlers, auth, signIn, signOut } = NextAuth((req) => {
+export const { handlers, auth, signIn, signOut } = NextAuth(async (req) => {
+  const googleConfig = await getSystemSetting('auth_google', { clientId: '', clientSecret: '' });
+  const facebookConfig = await getSystemSetting('auth_facebook', { clientId: '', clientSecret: '' });
+  const azureConfig = await getSystemSetting('auth_azure', { clientId: '', clientSecret: '', tenantId: '' });
+  const steamConfig = await getSystemSetting('auth_steam', { clientSecret: '' });
+  
+  const adminCreds = await getSystemSetting('admin_credentials', { adminUsername: 'admin', adminPassword: 'supersecret_change_me' });
+  const nextAuthUrl = await getSystemSetting('nextauth_url', 'http://localhost:3000');
+
   return {
     adapter: PrismaAdapter(prisma),
     session: {
       strategy: "jwt",
     },
     providers: [
-      // Conditionally add Google Provider
-      ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ...(googleConfig.clientId && googleConfig.clientSecret
         ? [
             GoogleProvider({
-              clientId: process.env.GOOGLE_CLIENT_ID,
-              clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+              clientId: googleConfig.clientId,
+              clientSecret: googleConfig.clientSecret,
             }),
           ]
         : []),
 
-      // Conditionally add Facebook Provider
-      ...(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET
+      ...(facebookConfig.clientId && facebookConfig.clientSecret
         ? [
             FacebookProvider({
-              clientId: process.env.FACEBOOK_CLIENT_ID,
-              clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+              clientId: facebookConfig.clientId,
+              clientSecret: facebookConfig.clientSecret,
             }),
           ]
         : []),
 
-      // Conditionally add Azure AD Provider
-      ...(process.env.AZURE_AD_CLIENT_ID && process.env.AZURE_AD_CLIENT_SECRET && process.env.AZURE_AD_TENANT_ID
+      ...(azureConfig.clientId && azureConfig.clientSecret && azureConfig.tenantId
         ? [
             AzureADProvider({
-              clientId: process.env.AZURE_AD_CLIENT_ID,
-              clientSecret: process.env.AZURE_AD_CLIENT_SECRET,
-              issuer: `https://login.microsoftonline.com/${process.env.AZURE_AD_TENANT_ID}/v2.0`,
+              clientId: azureConfig.clientId,
+              clientSecret: azureConfig.clientSecret,
+              issuer: `https://login.microsoftonline.com/${azureConfig.tenantId}/v2.0`,
             }),
           ]
         : []),
 
-      // Conditionally add Steam Provider
-      ...(process.env.STEAM_SECRET
+      ...(steamConfig.clientSecret
         ? [
             SteamProvider(req as NextRequest, {
-              clientSecret: process.env.STEAM_SECRET,
-              callbackUrl: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/callback/steam`
+              clientSecret: steamConfig.clientSecret,
+              callbackUrl: `${nextAuthUrl}/api/auth/callback/steam`
             }),
           ]
         : []),
@@ -63,23 +68,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth((req) => {
           password: { label: "Password", type: "password" },
         },
         async authorize(credentials) {
-          // In a real app, hash checking (bcrypt) should be done here against the DB.
-          // For the "breaking glass" admin, we use a strong env-configured password.
-          const adminUser = process.env.ADMIN_USERNAME || "admin";
-          const adminPass = process.env.ADMIN_PASSWORD || "supersecret";
-          
           if (
-            credentials?.username === adminUser &&
-            credentials?.password === adminPass
+            credentials?.username === adminCreds.adminUsername &&
+            credentials?.password === adminCreds.adminPassword
           ) {
-            // Upsert the admin user into the database so foreign key relations work
             const user = await prisma.user.upsert({
-              where: { email: "admin@localhost" },
+              where: { email: `${adminCreds.adminUsername}@localhost` },
               update: { role: "ADMIN" },
               create: {
                 id: "admin-id",
                 name: "System Admin",
-                email: "admin@localhost",
+                email: `${adminCreds.adminUsername}@localhost`,
                 role: "ADMIN",
               }
             });

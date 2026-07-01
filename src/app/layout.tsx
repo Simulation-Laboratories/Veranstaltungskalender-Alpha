@@ -12,11 +12,25 @@ export const metadata: Metadata = {
   description: "Entdecke Konzerte, Theater, Partys und mehr in deiner Umgebung.",
 };
 
-export default function RootLayout({
+import { readDbConfig } from "@/lib/config";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") || "";
+
+  if (!pathname.startsWith("/setup") && !pathname.startsWith("/api/setup")) {
+    const config = await readDbConfig();
+    if (!config?.DATABASE_URL) {
+      redirect("/setup");
+    }
+  }
+
   return (
     <html lang="de" suppressHydrationWarning>
       <body className={`${inter.className} min-h-screen bg-background antialiased flex flex-col`}>
