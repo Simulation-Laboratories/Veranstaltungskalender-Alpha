@@ -1,13 +1,12 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ShieldIcon, MapPinIcon, UsersIcon, FlagIcon } from "lucide-react";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   
-  if (!session?.user || (session.user as any).role !== "ADMIN" && (session.user as any).role !== "MODERATOR") {
+  if (!session?.user || session.user.role !== "ADMIN" && session.user.role !== "MODERATOR") {
     redirect("/");
   }
 

@@ -4,8 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CalendarIcon, MapPinIcon, ClockIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { EventChat } from "@/components/event-chat";
 import { ReviewSection } from "@/components/review-section";
 
@@ -23,9 +22,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   if (!event) notFound();
 
   // Visibility Check: Draft or Scheduled
-  const session = await getServerSession(authOptions);
-  const userId = (session?.user as any)?.id;
-  const userRole = (session?.user as any)?.role;
+  const session = await auth();
+  const userId = session?.user?.id;
+  const userRole = session?.user?.role;
   const isAdmin = userRole === "ADMIN" || userRole === "MODERATOR";
   const isOwner = event.organizer.ownerId === userId;
 
@@ -54,11 +53,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     <div className="container mx-auto py-10 space-y-8 max-w-4xl">
       {/* Banner */}
       {event.imageBanner ? (
-        <div className="w-full h-64 md:h-96 overflow-hidden bg-muted rounded-xl shadow-lg border">
-          <img
+        <div className="w-full h-64 md:h-96 overflow-hidden bg-muted rounded-xl shadow-lg border relative">
+          <Image
             src={event.imageBanner}
             alt={event.title}
-            className={`w-full h-full object-cover ${isArchived ? 'grayscale' : ''}`}
+            fill
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            className={`object-cover ${isArchived ? 'grayscale' : ''}`}
           />
         </div>
       ) : (

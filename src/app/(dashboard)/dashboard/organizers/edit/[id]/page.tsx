@@ -1,14 +1,13 @@
 import { OrganizerForm } from "@/components/forms/organizer-form";
 import prisma from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 
 export default async function EditOrganizerPage({ params }: { params: Promise<{ id: string }> }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user) redirect("/api/auth/signin");
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const resolvedParams = await params;
 
   const organizer = await prisma.organizer.findUnique({

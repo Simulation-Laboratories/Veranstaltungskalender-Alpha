@@ -8,8 +8,10 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { RichTextEditor } from "@/components/rich-text-editor";
 
+import type { Organizer } from "@prisma/client";
+
 type OrganizerFormProps = {
-  initialData?: any; // If provided, we are in Edit Mode
+  initialData?: Partial<Organizer>; // If provided, we are in Edit Mode
 };
 
 export function OrganizerForm({ initialData }: OrganizerFormProps) {

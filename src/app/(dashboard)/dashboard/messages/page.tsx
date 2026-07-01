@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { ContactButton } from "@/components/contact-button";
@@ -8,10 +7,10 @@ import { TrashIcon } from "lucide-react";
 import { revalidatePath } from "next/cache";
 
 export default async function MessagesPage() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session) redirect("/login");
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
 
   const receivedMessages = await prisma.message.findMany({
     where: { receiverId: userId },
@@ -31,15 +30,15 @@ export default async function MessagesPage() {
 
   async function deleteMessage(messageId: string) {
     "use server";
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) return;
     
     await prisma.message.deleteMany({
       where: {
         id: messageId,
         OR: [
-          { receiverId: (session.user as any).id },
-          { senderId: (session.user as any).id }
+          { receiverId: session.user.id },
+          { senderId: session.user.id }
         ]
       }
     });

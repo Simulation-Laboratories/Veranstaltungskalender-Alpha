@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { StarIcon, UserIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { getSafeUrl } from "@/lib/utils";
+import Image from "next/image";
 
 type Review = {
   id: string;
@@ -28,7 +30,7 @@ export function ReviewSection({ eventId, locationId, canReview }: { eventId?: st
 
   const endpoint = eventId ? `/api/events/${eventId}/reviews` : `/api/locations/${locationId}/reviews`;
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const res = await fetch(endpoint);
       if (res.ok) {
@@ -40,11 +42,12 @@ export function ReviewSection({ eventId, locationId, canReview }: { eventId?: st
     } finally {
       setLoading(false);
     }
-  };
+  }, [endpoint]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (eventId || locationId) fetchReviews();
-  }, [eventId, locationId]);
+  }, [eventId, locationId, fetchReviews]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,8 +72,8 @@ export function ReviewSection({ eventId, locationId, canReview }: { eventId?: st
       toast.success("Bewertung gespeichert!");
       setComment("");
       fetchReviews();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Ein Fehler ist aufgetreten");
     } finally {
       setSubmitting(false);
     }
@@ -135,7 +138,7 @@ export function ReviewSection({ eventId, locationId, canReview }: { eventId?: st
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center overflow-hidden">
                     {review.user.image ? (
-                      <img src={review.user.image} alt={review.user.name || "User"} />
+                      <Image src={getSafeUrl(review.user.image) || ""} alt={review.user.name || "User"} width={32} height={32} className="object-cover" />
                     ) : (
                       <UserIcon className="w-4 h-4 text-muted-foreground" />
                     )}

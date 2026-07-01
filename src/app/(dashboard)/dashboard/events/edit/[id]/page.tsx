@@ -1,14 +1,13 @@
 import { EventForm } from "@/components/forms/event-form";
 import prisma from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 
 export default async function EditEventPage({ params }: { params: Promise<{ id: string }> }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user) redirect("/api/auth/signin");
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const resolvedParams = await params;
 
   const event = await prisma.event.findUnique({
@@ -18,7 +17,7 @@ export default async function EditEventPage({ params }: { params: Promise<{ id: 
 
   if (!event) notFound();
 
-  const userRole = (session.user as any).role;
+  const userRole = session.user.role;
   const isAdmin = userRole === "ADMIN" || userRole === "MODERATOR";
 
   // Verify ownership via organizer

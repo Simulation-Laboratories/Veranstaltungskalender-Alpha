@@ -9,12 +9,16 @@ import { toast } from "sonner";
 import { RichTextEditor } from "@/components/rich-text-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Link from "next/link";
+import Image from "next/image";
+import { getSafeUrl } from "@/lib/utils";
+
+import type { Event } from "@prisma/client";
 
 type Organizer = { id: string; name: string };
 type Location = { id: string; name: string };
 
 type EventFormProps = {
-  initialData?: any; // If provided, we are in Edit Mode
+  initialData?: Partial<Event>; // If provided, we are in Edit Mode
   organizers: Organizer[];
   locations: Location[];
   isAdmin?: boolean;
@@ -59,7 +63,7 @@ export function EventForm({ initialData, organizers, locations, isAdmin = false 
   // If user is admin, they are never "archived" locked
   const isArchived = initialData && !isAdmin ? (
     (initialData.endDate && new Date(initialData.endDate) < now) || 
-    (!initialData.endDate && new Date(initialData.startDate) < startOfToday)
+    (!initialData.endDate && initialData.startDate && new Date(initialData.startDate) < startOfToday)
   ) : false;
 
   const handleSubmit = async (e: React.FormEvent, isDraftAction: boolean = false) => {
@@ -168,7 +172,7 @@ export function EventForm({ initialData, organizers, locations, isAdmin = false 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label>Veranstalter</Label>
-          <Select value={selectedOrganizer} onValueChange={setSelectedOrganizer} disabled={isArchived}>
+          <Select value={selectedOrganizer} onValueChange={(val) => setSelectedOrganizer(val || "")} disabled={isArchived}>
             <SelectTrigger>
               <SelectValue placeholder="Wähle Veranstalter">
                 {organizers.find(o => o.id === selectedOrganizer)?.name || "Wähle Veranstalter"}
@@ -184,7 +188,7 @@ export function EventForm({ initialData, organizers, locations, isAdmin = false 
         
         <div className="space-y-2">
           <Label>Location</Label>
-          <Select value={selectedLocation} onValueChange={setSelectedLocation} disabled={isArchived}>
+          <Select value={selectedLocation} onValueChange={(val) => setSelectedLocation(val || "")} disabled={isArchived}>
             <SelectTrigger>
               <SelectValue placeholder="Wähle Location">
                 {locations.find(l => l.id === selectedLocation)?.name || "Wähle Location"}
@@ -239,7 +243,7 @@ export function EventForm({ initialData, organizers, locations, isAdmin = false 
         {!isEditMode && (
           <div className="space-y-2 col-span-2">
             <Label>Wiederholung (nur bei Neuanlage)</Label>
-            <Select value={recurrence} onValueChange={setRecurrence} disabled={isArchived}>
+            <Select value={recurrence} onValueChange={(val) => setRecurrence(val || "none")} disabled={isArchived}>
               <SelectTrigger>
                 <SelectValue placeholder="Einmalig" />
               </SelectTrigger>
@@ -288,12 +292,13 @@ export function EventForm({ initialData, organizers, locations, isAdmin = false 
         {initialData?.imageBanner && !imageFile && (
           <div className="space-y-2 mt-2">
             <p className="text-xs text-muted-foreground">Aktuell ist ein Banner hinterlegt. Lade ein neues hoch, um es zu überschreiben.</p>
-            <img src={initialData.imageBanner} alt="Aktuelles Banner" className="w-32 h-16 object-cover rounded border" />
+            <Image src={getSafeUrl(initialData.imageBanner) || ""} alt="Aktuelles Banner" width={128} height={64} className="object-cover rounded border" />
           </div>
         )}
         {imageFile && (
           <div className="space-y-2 mt-2">
             <p className="text-xs text-muted-foreground">Neues Banner zum Upload ausgewählt:</p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={URL.createObjectURL(imageFile)} alt="Neues Banner" className="w-32 h-16 object-cover rounded border" />
           </div>
         )}

@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { MapPinIcon, CalendarIcon, CheckCircle2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ReviewSection } from "@/components/review-section";
@@ -29,10 +30,12 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
       {/* Banner / Logo */}
       {location.logo ? (
         <div className="w-full h-[300px] relative rounded-xl overflow-hidden shadow-lg border">
-          <img 
+          <Image 
             src={location.logo} 
             alt={location.name} 
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            className="object-cover"
           />
         </div>
       ) : (
@@ -45,7 +48,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
         <div className="flex items-center gap-3">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">{location.name}</h1>
           {location.isVerified && (
-            <CheckCircle2Icon className="w-6 h-6 text-blue-500" title="Verifizierte Location" />
+            <span title="Verifizierte Location"><CheckCircle2Icon className="w-6 h-6 text-blue-500" /></span>
           )}
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -80,8 +83,8 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
               <h2 className="text-2xl font-bold">Galerie</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {location.gallery.map((url, i) => (
-                  <div key={i} className="aspect-square bg-muted rounded-xl overflow-hidden border shadow-sm">
-                    <img src={url} alt={`Galerie Bild ${i+1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                  <div key={i} className="aspect-square bg-muted rounded-xl overflow-hidden border shadow-sm relative">
+                    <Image src={url} alt={`Galerie Bild ${i+1}`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover hover:scale-105 transition-transform duration-300" />
                   </div>
                 ))}
               </div>

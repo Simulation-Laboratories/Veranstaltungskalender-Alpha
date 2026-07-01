@@ -17,8 +17,9 @@ class LocalStorageProvider implements StorageProvider {
 
     try {
       await writeFile(filepath, fileBuffer);
-    } catch (e: any) {
-      if (e.code === "ENOENT") {
+    } catch (e: unknown) {
+      const err = e as { code?: string };
+      if (err.code === "ENOENT") {
         await mkdir(uploadDir, { recursive: true });
         await writeFile(filepath, fileBuffer);
       } else {

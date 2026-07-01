@@ -17,7 +17,9 @@ export function EventFilterBar() {
   const currentView = searchParams.get("view") || "grid";
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setQuery(searchParams.get("q") || "");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelectedCategory(searchParams.get("category") || "");
   }, [searchParams]);
 
@@ -65,7 +67,7 @@ export function EventFilterBar() {
           <div className="relative flex-1 max-w-md">
             <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input 
-              type="text" 
+              type="search" 
               placeholder="Nach Events, Locations oder Veranstaltern suchen..." 
               className="pl-9"
               value={query}

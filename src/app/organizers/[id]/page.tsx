@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CalendarIcon, MapPinIcon, CheckCircle2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactButton } from "@/components/contact-button";
+import { getSafeUrl } from "@/lib/utils";
 
 export default async function OrganizerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -52,9 +53,9 @@ export default async function OrganizerDetailPage({ params }: { params: Promise<
     <div className="container mx-auto py-10 space-y-12 max-w-5xl px-4">
       {/* Header Profile */}
       <div className="flex flex-col md:flex-row gap-8 items-start">
-        <div className="w-32 h-32 md:w-48 md:h-48 shrink-0 bg-muted rounded-2xl overflow-hidden shadow-md flex items-center justify-center">
+        <div className="w-32 h-32 md:w-48 md:h-48 shrink-0 bg-muted rounded-2xl overflow-hidden shadow-md relative flex items-center justify-center">
           {organizer.logo ? (
-            <img src={organizer.logo} alt={organizer.name} className="w-full h-full object-cover" />
+            <Image src={organizer.logo} alt={organizer.name} fill className="object-cover" sizes="(max-width: 768px) 128px, 192px" />
           ) : (
             <span className="text-4xl text-muted-foreground/30 font-bold">{organizer.name.charAt(0)}</span>
           )}
@@ -64,7 +65,7 @@ export default async function OrganizerDetailPage({ params }: { params: Promise<
           <div className="flex items-center gap-3">
             <h1 className="text-4xl font-bold tracking-tight">{organizer.name}</h1>
             {organizer.isVerified && (
-              <CheckCircle2Icon className="w-6 h-6 text-blue-500" title="Verifizierter Veranstalter" />
+              <span title="Verifizierter Veranstalter"><CheckCircle2Icon className="w-6 h-6 text-blue-500" /></span>
             )}
           </div>
           
@@ -94,7 +95,7 @@ export default async function OrganizerDetailPage({ params }: { params: Promise<
               <Link href={`/events/${event.id}`} key={event.id} className="group flex flex-col bg-card border rounded-xl overflow-hidden hover:shadow-md transition-all">
                 <div className="h-40 bg-muted relative">
                   {event.imageBanner ? (
-                    <img src={event.imageBanner} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <Image src={event.imageBanner} alt={event.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-tr from-purple-500/20 to-cyan-500/20 flex items-center justify-center">
                       <span className="text-muted-foreground/50 font-medium">Event</span>

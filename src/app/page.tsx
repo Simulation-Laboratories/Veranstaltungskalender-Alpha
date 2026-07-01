@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
@@ -19,7 +20,7 @@ export default async function Home({
   startOfToday.setHours(0, 0, 0, 0);
 
   // Build the dynamic where clause
-  const whereClause: any = {
+  const whereClause: Prisma.EventWhereInput = {
     isDraft: false,
     OR: [
       { publishAt: null },
@@ -41,7 +42,8 @@ export default async function Home({
   };
 
   if (query) {
-    whereClause.AND.push({
+    whereClause.AND = whereClause.AND || [];
+    (whereClause.AND as Prisma.EventWhereInput[]).push({
       OR: [
         { title: { contains: query, mode: "insensitive" } },
         { description: { contains: query, mode: "insensitive" } },
@@ -53,7 +55,8 @@ export default async function Home({
 
   if (category) {
     // Check if the categories array contains the given category string
-    whereClause.AND.push({
+    whereClause.AND = whereClause.AND || [];
+    (whereClause.AND as Prisma.EventWhereInput[]).push({
       categories: {
         has: category
       }

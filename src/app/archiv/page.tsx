@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { CalendarIcon, MapPinIcon, ArchiveIcon } from "lucide-react";
+import Image from "next/image";
 
 export default async function ArchivePage() {
   const now = new Date();
@@ -63,11 +64,13 @@ export default async function ArchivePage() {
               <div className="group rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden hover:shadow-md transition-all hover:border-purple-500/50 cursor-pointer h-full flex flex-col opacity-80 hover:opacity-100">
                 {/* Image Banner */}
                 {event.imageBanner ? (
-                  <div className="w-full h-48 overflow-hidden bg-muted">
-                    <img
+                  <div className="w-full h-48 overflow-hidden bg-muted relative">
+                    <Image
                       src={event.imageBanner}
                       alt={event.title}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover grayscale group-hover:grayscale-0 transition-all"
                     />
                   </div>
                 ) : (

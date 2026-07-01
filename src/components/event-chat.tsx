@@ -35,6 +35,7 @@ export function EventChat({ eventId, isArchived }: { eventId: string, isArchived
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMessages();
     // Optional: Set up a polling interval for live chat MVP
     const interval = setInterval(fetchMessages, 10000); // refresh every 10s

@@ -7,9 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { RichTextEditor } from "@/components/rich-text-editor";
+import { getSafeUrl } from "@/lib/utils";
+import Image from "next/image";
+
+import type { Location } from "@prisma/client";
 
 type LocationFormProps = {
-  initialData?: any; // If provided, we are in Edit Mode
+  initialData?: Partial<Location>; // If provided, we are in Edit Mode
 };
 
 export function LocationForm({ initialData }: LocationFormProps) {
@@ -117,12 +121,13 @@ export function LocationForm({ initialData }: LocationFormProps) {
         {initialData?.logo && !imageFile && (
           <div className="space-y-2 mt-2">
             <p className="text-xs text-muted-foreground">Aktuell ist ein Logo hinterlegt. Lade ein neues hoch, um es zu überschreiben.</p>
-            <img src={initialData.logo} alt="Aktuelles Logo" className="w-16 h-16 object-cover rounded border" />
+            <Image src={getSafeUrl(initialData.logo) || ""} alt="Aktuelles Logo" width={64} height={64} className="object-cover rounded border" />
           </div>
         )}
         {imageFile && (
           <div className="space-y-2 mt-2">
             <p className="text-xs text-muted-foreground">Neues Logo zum Upload ausgewählt:</p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={URL.createObjectURL(imageFile)} alt="Neues Logo" className="w-16 h-16 object-cover rounded border" />
           </div>
         )}
@@ -145,12 +150,12 @@ export function LocationForm({ initialData }: LocationFormProps) {
             }
           }}
         />
-        {initialData?.gallery?.length > 0 && galleryFiles.length === 0 && (
+        {(initialData?.gallery?.length ?? 0) > 0 && galleryFiles.length === 0 && (
           <div className="space-y-2 mt-2">
-            <p className="text-xs text-muted-foreground">Aktuell sind {initialData.gallery.length} Bilder hinterlegt. Neue Uploads werden hinzugefügt.</p>
+            <p className="text-xs text-muted-foreground">Aktuell sind {initialData?.gallery?.length} Bilder hinterlegt. Neue Uploads werden hinzugefügt.</p>
             <div className="flex gap-2 flex-wrap">
-              {initialData.gallery.map((url: string, i: number) => (
-                <img key={i} src={url} alt="Vorschau" className="w-16 h-16 object-cover rounded border" />
+              {initialData?.gallery?.map((url: string, i: number) => (
+                <Image key={i} src={getSafeUrl(url) || ""} alt="Vorschau" width={64} height={64} className="object-cover rounded border" />
               ))}
             </div>
           </div>
@@ -160,6 +165,7 @@ export function LocationForm({ initialData }: LocationFormProps) {
             <p className="text-xs text-muted-foreground">{galleryFiles.length} neue Bilder zum Upload ausgewählt:</p>
             <div className="flex gap-2 flex-wrap">
               {galleryFiles.map((f, i) => (
+                /* eslint-disable-next-line @next/next/no-img-element */
                 <img key={i} src={URL.createObjectURL(f)} alt="Vorschau neu" className="w-16 h-16 object-cover rounded border" />
               ))}
             </div>
