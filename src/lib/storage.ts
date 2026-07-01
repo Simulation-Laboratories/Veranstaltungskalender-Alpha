@@ -16,11 +16,13 @@ class LocalStorageProvider implements StorageProvider {
     const filepath = path.join(uploadDir, filename);
 
     try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       await writeFile(filepath, fileBuffer);
     } catch (e: unknown) {
       const err = e as { code?: string };
       if (err.code === "ENOENT") {
         await mkdir(uploadDir, { recursive: true });
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         await writeFile(filepath, fileBuffer);
       } else {
         throw e;

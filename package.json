@@ -52,6 +52,7 @@
     "typescript": "^5"
   },
   "overrides": {
+    "@hono/node-server": "^1.19.13",
     "fast-uri": "^4.0.1",
     "postcss": "^8.5.10",
     "postcss-selector-parser": "^6.1.3",
