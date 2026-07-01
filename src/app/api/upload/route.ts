@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     
     // Use the abstracted storage provider
-    const publicUrl = await storage.uploadFile(buffer, file.name, file.type);
+    const publicUrl = await storage.uploadFile(buffer, file.name);
     
     return NextResponse.json({ url: publicUrl });
   } catch (error) {

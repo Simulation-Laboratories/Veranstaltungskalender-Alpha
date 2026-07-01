@@ -126,7 +126,7 @@ export default async function Home({
                         {event.startDate.toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long' }).toUpperCase()}
                       </div>
                       <h3 className="font-semibold text-lg group-hover:text-purple-400 transition-colors truncate">{event.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-1 mt-1" dangerouslySetInnerHTML={{ __html: event.description.replace(/<[^>]*>?/gm, '') }} />
+                      <p className="text-sm text-muted-foreground line-clamp-1 mt-1">{event.description.replace(/<[^>]*>?/gm, '')}</p>
                     </div>
 
                     <div className="text-xs text-muted-foreground flex items-center justify-between mt-3">
@@ -173,7 +173,7 @@ export default async function Home({
                       {event.startDate.toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long' }).toUpperCase()}
                     </div>
                     <h3 className="font-semibold text-xl group-hover:text-purple-400 transition-colors">{event.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2" dangerouslySetInnerHTML={{ __html: event.description.replace(/<[^>]*>?/gm, '') }} />
+                    <p className="text-sm text-muted-foreground line-clamp-2">{event.description.replace(/<[^>]*>?/gm, '')}</p>
                   </div>
 
                   <div className="text-xs text-muted-foreground pt-4 border-t flex items-center justify-between mt-auto gap-2">

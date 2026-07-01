@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Link from "next/link";
 import Image from "next/image";
 import { getSafeUrl } from "@/lib/utils";
+import DOMPurify from "isomorphic-dompurify";
 
 import type { Event } from "@prisma/client";
 
@@ -307,7 +308,7 @@ export function EventForm({ initialData, organizers, locations, isAdmin = false 
       <div className="space-y-2">
         <Label>Beschreibung (Rich Text)</Label>
         {isArchived ? (
-          <div className="p-4 border rounded-md bg-muted/50 prose prose-purple dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: description }} />
+          <div className="p-4 border rounded-md bg-muted/50 prose prose-purple dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
         ) : (
           <RichTextEditor value={description} onChange={setDescription} />
         )}
