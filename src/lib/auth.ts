@@ -18,7 +18,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth(async (req) => {
   const adminCreds = await getSystemSetting('admin_credentials', { adminUsername: 'admin', adminPassword: 'supersecret_change_me' });
   const nextAuthUrl = await getSystemSetting('nextauth_url', 'http://localhost:3000');
 
+  let jwtSecret = await getSystemSetting('jwt_secret', '');
+  if (!jwtSecret) {
+    jwtSecret = crypto.randomUUID() + crypto.randomUUID();
+    await prisma.systemSettings.upsert({
+      where: { key: 'jwt_secret' },
+      update: {},
+      create: { key: 'jwt_secret', value: JSON.stringify(jwtSecret) }
+    });
+  }
+
   return {
+    secret: jwtSecret,
     adapter: PrismaAdapter(prisma),
     session: {
       strategy: "jwt",
